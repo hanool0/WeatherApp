@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>replit</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+  <body style="background-color:powderblue;">
+    <font color="#000000">Hello World Weather</font>
+    <script src="script.js"></script>
+
+    <div class="card">
+      <div class="search">
+        <input type="text" placeholder="Enter city name:" spellcheck="false">
+        <button><img src="magnifyinglass.png" width="15px" height="15px"></button>
+      </div>
+      <div class="weather">
+        <img src="rain.png" width="150px" height="150px" class="weather-icon">
+        <h1 class="temp">22 degrees Celsius</h1>
+        <h2 class="city">
+          <font size="6">New York</font>
+        </h2>
+        <div class="details">
+          <div class="col">
+            <img src="humidity1.png" width="100px" height="100px">
+            <p class="humidity">
+              <font size="7">50%</font>
+            </p>
+            <p>
+              <font size="5">Humidity</font>
+            </p>
+          </div>
+          <div class="col">
+            <img src="wind.png" width="100px" height="100px">
+            <p class="wind">
+              <font size="7">15 km/h</font>
+            </p>
+            <p>
+              <font size="5"> Wind Speed</font>
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+      <script>
+        const apiKey = "b6c8325f300c584d8a15e9da1735051f";
+        const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+        const searchBox = document.querySelector(".search input");
+        const searchBtn = document.querySelector(".search button"); //when clicking the button it will send information
+        const weatherIcon = document.querySelector(".weather-icon");
+
+        async function checkWeather(city) { //requires input of a city name
+          const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+          var data = await response.json(); //stores the data about the specific city
+
+          console.log(data);
+
+          document.querySelector(".city").innerHTML = data.name; //selects the exact data we need from console to display on the website 
+          document.querySelector(".temp").innerHTML = data.main.temp + "°C";
+          document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+          document.querySelector(".wind").innerHTML = data.wind.speed + "km/h";
+          if (data.weather[0].main == "Clouds") { //inputs images of the weather corresponding to data received from api
+            weatherIcon.src = "cloudy.png";
+
+          }
+          else if (data.weather[0].main == "Clear") {
+            weatherIcon.src = "clear.png";
+
+          }
+          else if (data.weather[0].main == "Rain") {
+            weatherIcon.src = "rain.png";
+
+          }
+          else if (data.weather[0].main == "Drizzle") {
+            weatherIcon.src = "drizzle.jpg";
+
+          }
+          else if (data.weather[0].main == "Mist") {
+            weatherIcon.src = "mist.jpg";
+          }
+        }
+
+        searchBtn.addEventListener("click", () => {
+          checkWeather(searchBox.value);
+        }) 
+
+
+      </script>
+  </body>
+
+</html>
